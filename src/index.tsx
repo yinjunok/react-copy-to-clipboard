@@ -18,7 +18,7 @@ interface ICopyToCliboardState {
 }
 
 interface ICopyToClipboardProps extends React.HTMLAttributes<HTMLSpanElement> {
-  copyText?: string | null;
+  text?: string | null;
   copy?: TCopy;
   tip: ITip;
 }
@@ -39,38 +39,41 @@ class CopyToClipboard extends React.Component<ICopyToClipboardProps, ICopyToClib
   private id = toolTipId++;
   public render() {
     const {
+      tip,
       copy,
       onClick,
       children,
       className,
       ...props
     } = this.props;
+    const { status } = this.state;
 
-    const tip = this.getTip();
-    const tipType = this.getTipType();
+    const t = this.getTip();
+    // const tipType = this.getTipType();
 
     return (
       <>
         {
-          tip !== null
+          t !== null
           && <ReactTooltip
-              type={tipType}
+              type='info'
               effect='solid'
               id={`tooltip-${this.id}`}
             >
-              <span
-                ref={this.spanRef}
-                onClick={this.clickHandler}
-                {...props}
-              >
-                {tip.hover}
+              <span>
+                {
+                  t[status]
+                }
               </span>
             </ReactTooltip>
         }
         <span
           data-tip
+          ref={this.spanRef}
+          onClick={this.clickHandler}
           data-for={`tooltip-${this.id}`}
           className={`copy-container ${className}`}
+          {...props}
         >
           {children}
         </span>
@@ -80,11 +83,14 @@ class CopyToClipboard extends React.Component<ICopyToClipboardProps, ICopyToClib
 
   spanRef = React.createRef<HTMLSpanElement>();
   private clickHandler = async () => {
-    const { copyText, copy } = this.props;
+    const { text, copy } = this.props;
+    // 要复制的内容
     let content: null | string = null;
 
-    if (copyText !== undefined) {
-      content = copyText;
+    // 如果 props 没有传递 text
+    // 就使用 children 的文字 
+    if (text !== undefined) {
+      content = text;
     } else {
       const { current } = this.spanRef;
       if (current !== null) {
@@ -92,17 +98,35 @@ class CopyToClipboard extends React.Component<ICopyToClipboardProps, ICopyToClib
       }
     }
 
+    let r; // 复制的结果
+    // 如果内容为 null, 复制失败
     if (content === null) {
-      (copy as TCopy)(false);
-      return;
+      r = false;
     } else {
-      copyToClipboard(content);
-      (copy as TCopy)(false);
+      r = copyToClipboard(content);
     }
+
+    (copy as TCopy)(r);
+    if (r) {
+      this.setState({
+        status: 'success',
+      });
+    } else {
+      this.setState({
+        status: 'error',
+      })
+    }
+
+    setTimeout(() => {
+      this.setState({
+        status: 'hover',
+      })
+    }, 1500);
   }
 
   private getTipType = () => {
     const { status } = this.state;
+    
     switch (status) {
       case 'hover':
         return 'info';

@@ -13,7 +13,7 @@ class App extends React.Component {
   public render() {
     return (
       <div className='demo'>
-        <CopyToClipboard tip={{ hover: '没有成功' }} text='一行白鹭上青天abcd'>
+        <CopyToClipboard tip={{ hover: '点击复制' }} text='一行白鹭上青天abcd'>
           aaaaaaaaaaaaa
         </CopyToClipboard>
       </div>
