@@ -1,6 +1,6 @@
 import * as React from 'react';
 import copyToClipboard from 'copy-to-clipboard';
-import ReactTooltip from 'react-tooltip'
+// import ReactTooltip from 'react-tooltip'
 import './copy.less';
 
 type TCopy = (result: boolean) => void;
@@ -46,17 +46,15 @@ class CopyToClipboard extends React.Component<ICopyToClipboardProps, ICopyToClib
       className,
       ...props
     } = this.props;
-    const { status } = this.state;
-
-    const t = this.getTip();
-    // const tipType = this.getTipType();
+    // const { status } = this.state;
+    // const t = this.getTip();
 
     return (
       <>
-        {
+        {/* {
           t !== null
           && <ReactTooltip
-              type='info'
+              type='success'
               effect='solid'
               id={`tooltip-${this.id}`}
             >
@@ -66,7 +64,7 @@ class CopyToClipboard extends React.Component<ICopyToClipboardProps, ICopyToClib
                 }
               </span>
             </ReactTooltip>
-        }
+        } */}
         <span
           data-tip
           ref={this.spanRef}
