@@ -1,6 +1,6 @@
 const path = require('path');
-const webpack = require('webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
   mode: 'production',
@@ -73,5 +73,8 @@ module.exports = {
 
   plugins: [
     new ForkTsCheckerWebpackPlugin(),
+    new BundleAnalyzerPlugin({
+      analyzerMode: 'static'
+    }),
   ]
 }

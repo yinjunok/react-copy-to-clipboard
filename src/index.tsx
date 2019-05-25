@@ -1,7 +1,6 @@
 import * as React from 'react';
 import copyToClipboard from 'copy-to-clipboard';
 import ReactTooltip from 'react-tooltip'
-import './copy.less';
 
 type TCopy = (result: boolean) => void;
 
@@ -70,7 +69,7 @@ class CopyToClipboard extends React.Component<ICopyToClipboardProps, ICopyToClib
           ref={this.spanRef}
           onClick={this.clickHandler}
           data-for={`tooltip-${this.id}`}
-          className={`copy-container ${className}`}
+          style={{ cursor: 'pointer ' }}
           {...props}
         >
           {children}
@@ -122,20 +121,20 @@ class CopyToClipboard extends React.Component<ICopyToClipboardProps, ICopyToClib
     }, 1500);
   }
 
-  private getTipType = () => {
-    const { status } = this.state;
+  // private getTipType = () => {
+  //   const { status } = this.state;
     
-    switch (status) {
-      case 'hover':
-        return 'info';
-      case 'success':
-        return 'success';
-      case 'error':
-        return 'error';
-      default:
-        return 'info';
-    }
-  }
+  //   switch (status) {
+  //     case 'hover':
+  //       return 'info';
+  //     case 'success':
+  //       return 'success';
+  //     case 'error':
+  //       return 'error';
+  //     default:
+  //       return 'info';
+  //   }
+  // }
 
   private getTip = () : null | ITip => {
     const { tip } = this.props;
